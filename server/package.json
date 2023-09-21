@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/juliochandra/TRAVELIO/issues"
   },
-  "homepage": "https://github.com/juliochandra/TRAVELIO#readme"
+  "homepage": "https://github.com/juliochandra/TRAVELIO#readme",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
 }
