@@ -4,7 +4,8 @@
   "description": "Travelio adalah sebuah aplikasi yang didesain untuk membantu pengguna menemukan destinasi wisata yang sesuai dengan preferensi dan kebutuhan mereka. Aplikasi ini dibangun menggunakan bahasa pemrograman JavaScript, yang memungkinkan pengguna untuk menjelajahi berbagai pilihan tempat wisata secara mudah dan nyaman.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon index.js"
   },
   "repository": {
     "type": "git",
@@ -17,6 +18,10 @@
   },
   "homepage": "https://github.com/juliochandra/TRAVELIO#readme",
   "dependencies": {
-    "express": "^4.18.2"
+    "dotenv": "^16.3.1",
+    "ejs": "^3.1.9",
+    "express": "^4.18.2",
+    "knex": "^2.5.1",
+    "pg": "^8.11.3"
   }
 }
