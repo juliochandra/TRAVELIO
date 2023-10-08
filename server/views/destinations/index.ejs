@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Destination</title>
+  </head>
+  <body>
+    <h1>Destination Page</h1>
+    <ul>
+      <% for (let destination of destinations) { %>
+      <li>
+        <a href="/api/destinations/v1/<%=destination.destination_id %>"
+          ><%= destination.destination_name%></a
+        >
+      </li>
+      <% } %>
+    </ul>
+  </body>
+</html>

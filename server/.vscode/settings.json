@@ -1,0 +1,7 @@
+{
+  "editor.tabFocusMode": false,
+  "editor.tabCompletion": "off",
+  "workbench.editor.pinnedTabsOnSeparateRow": false,
+  "workbench.editor.wrapTabs": false,
+  "workbench.editor.highlightModifiedTabs": false
+}
