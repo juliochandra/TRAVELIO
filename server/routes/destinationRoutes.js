@@ -1,17 +1,20 @@
 const express = require("express");
 const destinationController = require("../controllers/destinationControllers");
-const destinationsRouter = express.Router();
+const router = express.Router();
 
-destinationsRouter
+router.route("/create").get(destinationController.renderCreateForm);
+router.route("/:id/update").get(destinationController.renderUpdateForm);
+
+router
   .route("/")
   .post(destinationController.createDestination)
   .get(destinationController.getAllDestinations);
 
-destinationsRouter
+router
   .route("/:id")
   .get(destinationController.getOneDestination)
   .put(destinationController.updateDestination)
   .patch(destinationController.updatePartDestination)
   .delete(destinationController.deleteDestination);
 
-module.exports = destinationsRouter;
+module.exports = router;
