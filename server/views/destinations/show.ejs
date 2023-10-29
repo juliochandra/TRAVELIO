@@ -2,12 +2,12 @@
 
 <h1>SHOW DESTINATION</h1>
 <div class="destination">
-  <h1><%= destination.destination_name %></h1>
+  <h1><%= destination.name %></h1>
   <p><%= destination.description %></p>
 </div>
 
 <a href="/api/v1/destinations/">BACK</a>
-<a href="/api/v1/destinations/<%=destination.destination_id %>/update/"
+<a href="/api/v1/destinations/<%=destination.id %>/update/"
   >update</a
 >
 <script

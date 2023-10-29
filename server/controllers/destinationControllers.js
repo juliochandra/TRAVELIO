@@ -1,6 +1,8 @@
-const knex = require("knex");
-const knexConfig = require("../knexfile");
-const db = knex(knexConfig.development);
+// const knex = require("knex");
+// const knexConfig = require("../knexfile");
+// const db = knex(knexConfig.development);
+
+const Destination = require("../models/destinationModels"); // Import the model
 
 // controllers
 module.exports.renderCreateForm = async (req, res) => {
@@ -41,7 +43,7 @@ module.exports.createDestination = async (req, res) => {
 
 module.exports.getAllDestinations = async (req, res) => {
   try {
-    const destinations = await db("destinations").select("*");
+    const destinations = await Destination.findAll();
     // console.log(destinations);
     res.render("destinations/index", { destinations });
   } catch (error) {
@@ -55,10 +57,8 @@ module.exports.getAllDestinations = async (req, res) => {
 module.exports.getOneDestination = async (req, res) => {
   try {
     const destinationId = req.params.id;
-    const destination = await db("destinations")
-      .where("destination_id", destinationId)
-      .first();
-    console.log(destination);
+    const destination = await Destination.findById(destinationId);
+    // console.log(destination);
     if (destination) {
       res.render("destinations/show", { destination });
     } else {

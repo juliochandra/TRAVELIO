@@ -7,8 +7,8 @@
 <ul>
   <% for (let destination of destinations) { %>
   <li>
-    <a href="/api/v1/destinations/<%=destination.destination_id %>"
-      ><%= destination.destination_name%></a
+    <a href="/api/v1/destinations/<%=destination.id %>"
+      ><%= destination.name%></a
     >
   </li>
   <% } %>
