@@ -4,6 +4,17 @@
 <div class="destination">
   <h1><%= destination.name %></h1>
   <p><%= destination.description %></p>
+  <% if (destination.reviews && destination.reviews.length > 0) { %>
+    <h3>Reviews:</h3>
+    <ul>
+        <% destination.reviews.forEach(review => { %>
+            <li>
+                <strong>Rating:</strong> <%= review.review_rating %> <br>
+                <%= review.review_text %>
+            </li>
+        <% }); %>
+    </ul>
+<% } %>
 </div>
 
 <a href="/api/v1/destinations/">BACK</a>
