@@ -8,7 +8,6 @@ const db = knex(knexConfig.development);
 // controllers
 module.exports.renderCreateForm = async (req, res) => {
   try {
-    console.log("create new data");
     res.render("destinations/create");
   } catch (error) {
     res.status(400).json({
@@ -20,7 +19,6 @@ module.exports.renderCreateForm = async (req, res) => {
 
 module.exports.renderUpdateForm = async (req, res) => {
   try {
-    console.log("create new data");
     res.render("destinations/update");
   } catch (error) {
     res.status(400).json({
@@ -32,7 +30,6 @@ module.exports.renderUpdateForm = async (req, res) => {
 
 module.exports.createDestination = async (req, res) => {
   try {
-    console.log(req.body);
     const destinationData = req.body;
     const destination = await db("destination")
       .insert(destinationData)
@@ -72,39 +69,54 @@ module.exports.getOneDestination = async (req, res) => {
     const destinationId = req.params.id;
     const destinationData = await db("destination")
       .leftJoin("user", "user.id", "destination.user_id")
-      .leftJoin("review", "review.destination_id", "destination.id")
-      .select("*")
+      .select("destination.*", "user.name as name_creator")
       .where("destination.id", destinationId);
-    console.log(destinationData, "========== destinationData");
+    const reviewData = await db("review")
+      .leftJoin("user", "user.id", "review.user_id")
+      .select("review.*", "user.name");
 
-    if (!destinationData || destinationData.length === 0) {
-      return res.status(404).send("Destination not found");
-    }
-
-    // Extracting the reviews and ratings
-    const reviews = destinationData.map(obj => {
-      return obj.review;
-    });
-    const ratings = destinationData.map(obj => {
-      return obj.rating;
-    });
-
-    // console.log(reviews, "-------reviews");
-    const { ...restOfDestination } = destinationData[0];
-    // console.log(restOfDestination, "===========================> rest");
-    const destination = {
-      ...restOfDestination,
-      review: reviews,
-      rating: ratings
-    };
-
-    // console.log(destination);
     res.status(200).json({
       status: "success",
-      data: destination
+      destination: destinationData,
+      reviews: reviewData
     });
+
+    // ==================================================
+    // const destinationData = await db("destination")
+    //   .leftJoin("user", "user.id", "destination.user_id")
+    //   .leftJoin("review", "review.destination_id", "destination.id")
+    //   .select(
+    //     "destination.*",
+    //     "user.name as name_creator",
+    //     "review.id as review_id",
+    //     "review.review",
+    //     "review.rating"
+    //   )
+    //   .where("destination.id", destinationId);
+
+    // if (!destinationData || destinationData.length === 0) {
+    //   return res.status(404).send("Destination not found");
+    // }
+
+    // const reviewAndRating = destinationData.map(obj => ({
+    //   review_id: obj.review_id,
+    //   name_creator: obj.name,
+    //   review: obj.review,
+    //   rating: obj.rating
+    // }));
+
+    // const { review, rating, ...restOfDestination } = destinationData[0];
+    // const destination = {
+    //   ...restOfDestination,
+    //   reviews: reviewAndRating
+    // };
+
+    // res.status(200).json({
+    //   status: "success",
+    //   data: destination
+    // });
+    // ======================================================================
   } catch (error) {
-    console.error(error);
     res.status(500).send("Internal Server Error");
   }
 };
@@ -112,7 +124,12 @@ module.exports.getOneDestination = async (req, res) => {
 module.exports.updateDestination = async (req, res) => {
   try {
     const destinationId = req.params.id;
-    const updateDestinationData = req.body;
+
+    const updateDestinationData = {
+      ...req.body,
+      updated_at: new Date()
+    };
+
     const destination = await db("destination")
       .where("id", destinationId)
       .update(updateDestinationData)
