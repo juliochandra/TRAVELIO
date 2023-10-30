@@ -22,14 +22,14 @@ exports.seed = async function(knex) {
         "Candi Borobudur in Magelang is the world's largest Buddhist temple. This UNESCO World Heritage Site is a symbol of Indonesia's rich cultural heritage. The monument consists of nine stacked platforms, six square and three circular, topped by a central dome. It's renowned for its intricate relief panels narrating the life of Buddha."
     },
     {
-      user_id: "760a2087-f3d1-477d-8fc0-3118c71667b5",
+      user_id: "760a2087-ab53-4080-9444-4c7c3599fd45",
       name: "Kota Lama",
       location: "Semarang, Jawa Tengah",
       description:
         "Kota Lama, Semarang's old town, stands as a window into Indonesia's colonial era. With cobbled streets and Dutch-style buildings, it's a stark contrast to modern Semarang. The area is a haven for history buffs, offering a glimpse into the country's colonial past. It's also home to various cafes, galleries, and cultural events."
     },
     {
-      user_id: "760a2087-f3d1-477d-8fc0-3118c71667b5",
+      user_id: "760a2087-ab53-4080-9444-4c7c3599fd45",
       name: "Candi Prambanan",
       location: "Klaten, Jawa Tengah",
       description:

@@ -55,7 +55,10 @@ module.exports.getOneReview = async (req, res) => {
 module.exports.updateReview = async (req, res) => {
   try {
     const reviewId = req.params.id;
-    const updateReviewData = req.body;
+    const updateReviewData = {
+      ...req.body,
+      updated_at: new Date()
+    };
     const review = await db("review")
       .where("id", reviewId)
       .update(updateReviewData)
