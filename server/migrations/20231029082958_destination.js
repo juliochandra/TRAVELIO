@@ -3,7 +3,7 @@
  * @returns { Promise<void> }
  */
 exports.up = function(knex) {
-  return knex.schema.createTable("destination", (table) => {
+  return knex.schema.createTable("destination", table => {
     table
       .uuid("id")
       .primary()

@@ -4,6 +4,7 @@ const ejsMate = require("ejs-mate");
 
 const path = require("path");
 const destinationsRouter = require("./routes/destinationRoutes");
+const reviewsRouter = require("./routes/reviewsRoutes");
 
 const app = express();
 app.engine("ejs", ejsMate);
@@ -15,7 +16,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "public")));
 
-app.use(morgan("dev"));
+if (process.env.NODE_ENV === "development") {
+  app.use(morgan("dev"));
+}
 
 // server listening
 const port = process.env.PORT;
@@ -26,7 +29,7 @@ const getHome = async (req, res) => {
   } catch (error) {
     res.status(400).json({
       status: "fail",
-      message: error.message,
+      message: error.message
     });
   }
 };
@@ -34,9 +37,10 @@ const getHome = async (req, res) => {
 //  route
 app.get("/", getHome);
 app.use("/api/v1/destinations", destinationsRouter);
+app.use("/api/v1/reviews", reviewsRouter);
 
 app.all("*", (req, res) => {
-  res.status("Page Not Found", 404);
+  res.status(404).send("Page Not Found", 404);
 });
 
 app.listen(port, () => {
