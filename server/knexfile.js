@@ -1,26 +1,26 @@
 // Update with your config settings.
-const dotenv = require("dotenv");
+const dotenv = require('dotenv');
 
-dotenv.config({ path: "./.env" });
+dotenv.config({ path: './.env' });
 const { HOST, PORTDATABASE, USER, PASSWORD, DATABASE } = process.env;
 /**
  * @type { Object.<string, import("knex").Knex.Config> }
  */
 module.exports = {
   development: {
-    client: "pg",
+    client: 'pg',
     connection: {
       host: HOST,
       port: PORTDATABASE,
       user: USER,
       password: PASSWORD,
-      database: DATABASE,
+      database: DATABASE
     },
     pool: {
       min: 2, // Minimum number of connections in the pool
-      max: 10, // Maximum number of connections in the pool
-    },
-  },
+      max: 10 // Maximum number of connections in the pool
+    }
+  }
 
   // staging: {
   //   client: "postgresql",

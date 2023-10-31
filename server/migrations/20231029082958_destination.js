@@ -3,21 +3,21 @@
  * @returns { Promise<void> }
  */
 exports.up = function(knex) {
-  return knex.schema.createTable("destination", table => {
+  return knex.schema.createTable('destination', table => {
     table
-      .uuid("id")
+      .uuid('id')
       .primary()
-      .defaultTo(knex.raw("uuid_generate_v4()"));
-    table.timestamp("created_at").defaultTo(knex.fn.now());
-    table.timestamp("updated_at");
+      .defaultTo(knex.raw('uuid_generate_v4()'));
+    table.timestamp('created_at').defaultTo(knex.fn.now());
+    table.timestamp('updated_at');
     table
-      .uuid("user_id")
-      .references("id")
-      .inTable("user");
-    table.string("name");
-    table.string("location");
-    table.text("description");
-    table.string("image");
+      .uuid('user_id')
+      .references('id')
+      .inTable('user');
+    table.string('name');
+    table.string('location');
+    table.text('description');
+    table.string('image');
   });
 };
 
@@ -26,5 +26,5 @@ exports.up = function(knex) {
  * @returns { Promise<void> }
  */
 exports.down = function(knex) {
-  return knex.schema.dropTable("destination");
+  return knex.schema.dropTable('destination');
 };

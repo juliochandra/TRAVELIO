@@ -1,20 +1,25 @@
-const express = require("express");
-const destinationController = require("../controllers/destinationControllers");
+const express = require('express');
+const destinationController = require('../controllers/destinationControllers');
+const { checkSignIn, checkCreator } = require('../controllers/userControllers');
 
 const router = express.Router();
 
-router.route("/create").get(destinationController.renderCreateForm);
-router.route("/:id/update").get(destinationController.renderUpdateForm);
+router
+  .route('/create')
+  .get(checkSignIn, destinationController.renderCreateForm);
+router
+  .route('/:id/update')
+  .get(checkSignIn, checkCreator, destinationController.renderUpdateForm);
 
 router
-  .route("/")
-  .post(destinationController.createDestination)
+  .route('/')
+  .post(checkSignIn, destinationController.createDestination)
   .get(destinationController.getAllDestinations);
 
 router
-  .route("/:id")
+  .route('/:id')
   .get(destinationController.getOneDestination)
-  .put(destinationController.updateDestination)
-  .delete(destinationController.deleteDestination);
+  .put(checkSignIn, checkCreator, destinationController.updateDestination)
+  .delete(checkSignIn, checkCreator, destinationController.deleteDestination);
 
 module.exports = router;

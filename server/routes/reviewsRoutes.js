@@ -1,17 +1,18 @@
-const express = require("express");
-const reviewController = require("../controllers/reviewControllers");
+const express = require('express');
+const reviewController = require('../controllers/reviewControllers');
+const { checkSignIn } = require('../controllers/userControllers');
 
 const router = express.Router();
 
 router
-  .route("/")
-  .post(reviewController.createReview)
+  .route('/')
+  .post(checkSignIn, reviewController.createReview)
   .get(reviewController.getAllReview);
 
 router
-  .route("/:id")
+  .route('/:id')
   .get(reviewController.getOneReview)
-  .put(reviewController.updateReview)
-  .delete(reviewController.deleteReview);
+  .put(checkSignIn, reviewController.updateReview)
+  .delete(checkSignIn, reviewController.deleteReview);
 
 module.exports = router;
