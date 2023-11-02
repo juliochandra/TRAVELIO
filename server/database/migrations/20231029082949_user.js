@@ -10,10 +10,12 @@ exports.up = function(knex) {
       .defaultTo(knex.raw('uuid_generate_v4()'));
     table.timestamp('created_at').defaultTo(knex.fn.now());
     table.timestamp('updated_at');
-    table.string('name');
-    table.string('email');
-    table.string('password');
-    table.text('description');
+    table.string('name').notNullable();
+    table
+      .string('email')
+      .unique()
+      .notNullable();
+    table.string('password').notNullable();
   });
 };
 

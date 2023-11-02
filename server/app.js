@@ -1,11 +1,13 @@
 const express = require('express');
 const morgan = require('morgan');
 const ejsMate = require('ejs-mate');
+const session = require('express-session');
 
 const path = require('path');
 const destinationsRouter = require('./routes/destinationRoutes');
 const reviewsRouter = require('./routes/reviewsRoutes');
 const usersRouter = require('./routes/usersRoutes');
+const ExpressError = require('./middleware/expressError');
 
 const app = express();
 app.engine('ejs', ejsMate);
@@ -16,6 +18,15 @@ app.set('views', path.join(__dirname, 'views'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
+
+app.use(
+  session({
+    secret: process.env.YOUR_SECRET_KEY,
+    resave: false,
+    saveUninitialized: true,
+    cookie: { secure: false }
+  })
+);
 
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
@@ -41,8 +52,8 @@ app.use('/api/v1/destinations', destinationsRouter);
 app.use('/api/v1/reviews', reviewsRouter);
 app.use('/api/v1/users', usersRouter);
 
-app.all('*', (req, res) => {
-  res.status(404).send('Page Not Found', 404);
+app.all('*', (req, res, next) => {
+  next(new ExpressError('Page Not Found', 404));
 });
 
 app.listen(port, () => {
