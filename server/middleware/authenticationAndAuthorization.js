@@ -3,29 +3,21 @@ const { db } = require('../database/database');
 const catchAsync = require('./catchAsync');
 
 module.exports.checkSignIn = catchAsync(async (req, res, next) => {
-  try {
-    console.log(req.session.isSignedIn, 'is signin ===================');
-    console.log(req.session.creatorId, 'is id =======================');
-    if (req.session.isSignedIn) {
-      next();
-    } else {
-      res.status(401).json({ message: 'Please sign in first' });
-    }
-  } catch (error) {
-    res.status(500).json({ message: 'Error checking creator' });
+  if (req.isAuthenticated()) {
+    next();
+  } else {
+    res.status(401).json({ message: 'Please sign in first' });
   }
 });
 
 module.exports.checkCreator = async (req, res, next) => {
   try {
     const { id } = req.params;
-    console.log({ id }, 'id destination =======================');
     const destination = await db('destination')
       .where({ id })
       .first();
 
-    console.log(destination, '==========destination');
-    if (destination.user_id === req.session.creatorId) {
+    if (destination.user_id === req.user.id) {
       next();
     } else {
       res.status(403).json({
@@ -44,7 +36,7 @@ module.exports.checkReviewer = async (req, res, next) => {
     const review = await db('review')
       .where({ id })
       .first();
-    if (review.user_id === req.session.creatorId) {
+    if (review.user_id === req.user.id) {
       next();
     } else {
       res.status(403).json({

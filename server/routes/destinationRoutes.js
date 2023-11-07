@@ -1,4 +1,5 @@
 const express = require('express');
+const { upload } = require('../middleware/uploadCloudinary');
 const destinationController = require('../controllers/destinationControllers');
 const {
   checkSignIn,
@@ -21,7 +22,11 @@ router
 
 router
   .route('/')
-  .post(checkSignIn, catchAsync(destinationController.createDestination))
+  .post(
+    checkSignIn,
+    upload.single('image'),
+    catchAsync(destinationController.createDestination)
+  )
   .get(catchAsync(destinationController.getAllDestinations));
 
 router

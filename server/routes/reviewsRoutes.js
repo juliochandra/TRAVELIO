@@ -1,4 +1,5 @@
 const express = require('express');
+const { upload } = require('../middleware/uploadCloudinary');
 const reviewController = require('../controllers/reviewControllers');
 const {
   checkSignIn,
@@ -10,7 +11,11 @@ const router = express.Router();
 
 router
   .route('/')
-  .post(checkSignIn, catchAsync(reviewController.createReview))
+  .post(
+    checkSignIn,
+    upload.single('image'),
+    catchAsync(reviewController.createReview)
+  )
   .get(catchAsync(reviewController.getAllReview));
 
 router

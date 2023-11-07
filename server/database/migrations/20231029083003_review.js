@@ -2,6 +2,8 @@
  * @param { import("knex").Knex } knex
  * @returns { Promise<void> }
  */
+const image =
+  'https://res.cloudinary.com/dsh5ppscb/image/upload/v1699170463/Binar/yqaqobef53hwkzvg4hpv.jpg';
 exports.up = function(knex) {
   return knex.schema.createTable('review', table => {
     table
@@ -20,6 +22,7 @@ exports.up = function(knex) {
       .inTable('destination');
     table.text('review');
     table.integer('rating');
+    table.string('image').defaultTo(image);
   });
 };
 

@@ -11,10 +11,17 @@ module.exports.renderUpdateForm = async (req, res) => {
 
 module.exports.createDestination = async (req, res) => {
   const destinationData = req.body;
+  const destinationFile = req.file;
+
   const userIdAndDestinationData = {
-    user_id: req.session.creatorId,
+    user_id: req.user.id,
+    image:
+      destinationFile && destinationFile.path
+        ? destinationFile.path
+        : 'https://res.cloudinary.com/dsh5ppscb/image/upload/v1699170463/Binar/yqaqobef53hwkzvg4hpv.jpg',
     ...destinationData
   };
+  console.log(userIdAndDestinationData);
   const destination = await db('destination')
     .insert(userIdAndDestinationData)
     .returning('*');
@@ -42,7 +49,8 @@ module.exports.getOneDestination = async (req, res) => {
     .where('destination.id', destinationId);
   const reviewData = await db('review')
     .leftJoin('user', 'user.id', 'review.user_id')
-    .select('review.*', 'user.name');
+    .select('review.*', 'user.name')
+    .where('review.destination_id', destinationId);
 
   res.status(200).json({
     status: 'success',
@@ -59,7 +67,7 @@ module.exports.updateDestination = async (req, res) => {
     updated_at: new Date()
   };
 
-  const destination = await db('destination')
+  const [destination] = await db('destination')
     .where('id', destinationId)
     .update(updateDestinationData)
     .returning('*');

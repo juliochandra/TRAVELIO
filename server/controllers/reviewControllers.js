@@ -1,15 +1,15 @@
-const knex = require('knex');
-const knexConfig = require('../knexfile');
-
-const db = knex(knexConfig.development);
+const { db } = require('../database/database');
 
 module.exports.createReview = async (req, res) => {
   const reviewData = req.body;
+  const reviewFile = req.file;
   const userIdAndReviewData = {
-    user_id: req.session.creatorId,
+    user_id: req.user.id,
+    image: reviewFile.path,
     ...reviewData
   };
-  const review = await db('review')
+
+  const [review] = await db('review')
     .insert(userIdAndReviewData)
     .returning('*');
   res.status(201).json({
@@ -43,7 +43,7 @@ module.exports.updateReview = async (req, res) => {
     ...req.body,
     updated_at: new Date()
   };
-  const review = await db('review')
+  const [review] = await db('review')
     .where('id', reviewId)
     .update(updateReviewData)
     .returning('*');
