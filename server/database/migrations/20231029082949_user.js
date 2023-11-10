@@ -9,7 +9,7 @@ exports.up = function(knex) {
       .primary()
       .defaultTo(knex.raw('uuid_generate_v4()'));
     table.timestamp('created_at').defaultTo(knex.fn.now());
-    table.timestamp('updated_at');
+    table.timestamp('updated_at').defaultTo(knex.fn.now());
     table.string('name').notNullable();
     table
       .string('email')

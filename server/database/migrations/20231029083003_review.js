@@ -11,18 +11,23 @@ exports.up = function(knex) {
       .primary()
       .defaultTo(knex.raw('uuid_generate_v4()'));
     table.timestamp('created_at').defaultTo(knex.fn.now());
-    table.timestamp('updated_at');
+    table.timestamp('updated_at').defaultTo(knex.fn.now());
     table
       .uuid('user_id')
       .references('id')
-      .inTable('user');
+      .inTable('user')
+      .notNullable();
     table
       .uuid('destination_id')
       .references('id')
-      .inTable('destination');
+      .inTable('destination')
+      .notNullable();
     table.text('review');
-    table.integer('rating');
-    table.string('image').defaultTo(image);
+    table.integer('rating').notNullable();
+    table
+      .string('image')
+      .defaultTo(image)
+      .notNullable();
   });
 };
 

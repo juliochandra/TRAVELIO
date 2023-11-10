@@ -1,14 +1,29 @@
 const { db } = require('../database/database');
 
 module.exports.createReview = async (req, res) => {
+  const destinationId = req.params.id;
   const reviewData = req.body;
   const reviewFile = req.file;
+  const userId = req.user.id;
+
+  const checkReview = await db('review')
+    .where({
+      destination_id: destinationId,
+      user_id: userId
+    })
+    .first();
+  if (checkReview) {
+    return res.status(409).json({
+      status: 'fail',
+      message: 'User can only have one review per destination.'
+    });
+  }
   const userIdAndReviewData = {
-    user_id: req.user.id,
-    image: reviewFile.path,
+    user_id: userId,
+    destination_id: destinationId,
+    image: reviewFile ? reviewFile.path : null,
     ...reviewData
   };
-
   const [review] = await db('review')
     .insert(userIdAndReviewData)
     .returning('*');

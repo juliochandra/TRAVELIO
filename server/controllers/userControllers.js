@@ -1,6 +1,14 @@
 const bcrypt = require('bcrypt');
 const { db } = require('../database/database');
 
+module.exports.renderSignup = async (req, res) => {
+  res.render('users/register');
+};
+
+module.exports.renderSignin = async (req, res) => {
+  res.render('users/login');
+};
+
 module.exports.signup = async (req, res) => {
   const { name, email, password } = req.body;
   const checkUserEmail = await db('user')
@@ -18,22 +26,14 @@ module.exports.signup = async (req, res) => {
   if (user) {
     req.session.isSignedIn = true;
     req.session.creatorId = user.id;
-    res.status(201).json({
-      status: 'success',
-      message: 'Signed up successfully',
-      data: user
-    });
+    res.status(201).redirect('/');
   } else {
     res.status(401).json({ message: 'Invalid data' });
   }
 };
 
 module.exports.signin = async (req, res) => {
-  // console.log(req.body, '<========= in endpoint login');
-  res.status(200).json({
-    status: 'success',
-    user: req.user
-  });
+  res.status(200).redirect('/');
 };
 
 module.exports.signout = async (req, res, next) => {
@@ -42,9 +42,6 @@ module.exports.signout = async (req, res, next) => {
       return next(err);
     }
     // Successfully logged out, respond here
-    res.status(200).json({
-      status: 'success',
-      data: 'Signed out successfully'
-    });
+    res.status(200).redirect('/');
   });
 };

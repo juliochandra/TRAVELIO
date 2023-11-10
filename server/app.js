@@ -36,7 +36,7 @@ app.use(
     saveUninitialized: false,
     cookie: {
       secure: false,
-      maxAge: 1000 * 60 * 60 * 24 * 7
+      maxAge: 1000 * 60 * 60 * 24
     }
   })
 );
@@ -96,14 +96,7 @@ passport.deserializeUser(async (id, done) => {
 
 // untuk membuat user bisa diakses di ejs
 app.use((req, res, next) => {
-  if (req.user) {
-    res.locals.user = {
-      id: req.user.id,
-      name: req.user.name
-    };
-  } else {
-    res.locals.user = null;
-  }
+  res.locals.currentUser = req.user;
   next();
 });
 

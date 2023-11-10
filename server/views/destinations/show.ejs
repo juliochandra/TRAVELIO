@@ -1,23 +1,61 @@
 <% layout('/layouts/base.ejs') %>
 
-<h1>SHOW DESTINATION</h1>
-<div class="destination">
-  <h1><%= destination.name %></h1>
-  <p><%= destination.description %></p>
-  <% if (destination.reviews && destination.reviews.length > 0) { %>
-    <h3>Reviews:</h3>
-    <ul>
-        <% destination.reviews.forEach(review => { %>
-            <li>
-                <strong>Rating:</strong> <%= review.review_rating %> <br>
-                <%= review.review_text %>
-            </li>
-        <% }); %>
-    </ul>
-<% } %>
-</div>
+<div class="container mb-5">
+  <div class="row">
 
-<a href="/api/v1/destinations/">BACK</a>
-<a href="/api/v1/destinations/<%=destination.id %>/update/"
-  >update</a
->
+    <div class="col-lg-6 mb-4">
+      <div class="card h-100 shadow">
+        <img src="<%= destinationData.image %>" class="card-img-top" alt="<%= destinationData.name %> image">
+        <div class="card-body">
+          <h5 class="card-title"><%= destinationData.name %></h5>
+          <p class="card-text"><%= destinationData.description %></p>
+        </div>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item"><%= destinationData.location %></li>
+        </ul>
+        <div class="card-body">
+          <a href="/campgrounds/<%= destinationData.id %>/edit" class="card-link btn btn-primary">Edit</a>
+          <form class="d-inline" action="/campgrounds/<%= destinationData.id %>?_method=DELETE" method="POST">
+            <button type="submit" class="btn btn-danger">Delete</button>
+          </form>
+        </div>
+        <div class="card-footer text-muted">
+          <%= destinationData.name_creator %> </div>
+      </div>
+    </div>
+
+    <div class="col-lg-6 mb-4">
+      <h2 class="mb-3">Leave a Review</h2>
+      <form action="/campgrounds/<%= destinationData.id %>/reviews" method="POST" class="needs-validation" novalidate>
+        <div class="mb-3">
+          <label for="rating" class="form-label">Rating</label>
+          <input class="form-range" type="range" min="1" max="5" name="review[rating]" id="rating">
+        </div>
+        <div class="mb-3">
+          <label for="body" class="form-label">Review</label>
+          <textarea class="form-control" name="review[body]" id="body" rows="3" required></textarea>
+          <div class="invalid-feedback">
+            Please provide a review.
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+
+      <% reviewData.forEach(function(review) { %>
+      <div class="card mb-3">
+        <div class="card-body">
+          <h5 class="card-title">Rating: <%= review.rating %></h5>
+          <p class="card-text"><%= review.review %></p>
+          <% if (review.image) { %>
+          <img src="<%= review.image %>" class="card-img-bottom mb-3" alt="Review image">
+          <% } %>
+          <form action="/campgrounds/<%= destinationData.id %>/reviews/<%= review.id %>?_method=DELETE" method="POST">
+            <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+          </form>
+        </div>
+      </div>
+      <% }); %>
+    </div>
+
+  </div>
+</div>

@@ -6,10 +6,16 @@ const catchAsync = require('../middleware/catchAsync');
 
 const router = express.Router();
 
-router.route('/signup').post(catchAsync(userController.signup));
+router
+  .route('/signup')
+  .get(userController.renderSignup)
+  .post(catchAsync(userController.signup));
+
 router
   .route('/signin')
+  .get(userController.renderSignin)
   .post(passport.authenticate('local'), catchAsync(userController.signin));
+
 router.route('/signout').get(catchAsync(userController.signout));
 
 module.exports = router;
