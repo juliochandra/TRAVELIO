@@ -1,56 +1,73 @@
 // Update with your config settings.
-const dotenv = require("dotenv");
+const dotenv = require('dotenv');
 
-dotenv.config({ path: "./.env" });
+dotenv.config({ path: './.env' });
+
 const { HOST, PORTDATABASE, USER, PASSWORD, DATABASE } = process.env;
 /**
  * @type { Object.<string, import("knex").Knex.Config> }
  */
 module.exports = {
   development: {
-    client: "pg",
+    client: 'pg',
     connection: {
       host: HOST,
       port: PORTDATABASE,
       user: USER,
       password: PASSWORD,
-      database: DATABASE,
+      database: DATABASE
     },
     pool: {
-      min: 2, // Minimum number of connections in the pool
-      max: 10, // Maximum number of connections in the pool
+      min: 2,
+      max: 10
     },
-  },
+    migrations: {
+      directory: './database/migrations'
+    },
+    seeds: {
+      directory: './database/seeds'
+    }
+  }
 
   // staging: {
-  //   client: "postgresql",
+  //   client: 'pg',
   //   connection: {
-  //     database: "my_db",
-  //     user: "username",
-  //     password: "password",
+  //     host: HOST,
+  //     port: PORTDATABASE,
+  //     user: USER,
+  //     password: PASSWORD,
+  //     database: DATABASE
   //   },
   //   pool: {
   //     min: 2,
-  //     max: 10,
+  //     max: 10
   //   },
   //   migrations: {
-  //     tableName: "knex_migrations",
+  //     directory: './database/migrations'
   //   },
-  // },
+  //   seeds: {
+  //     directory: './database/seeds'
+  //   }
+  // }
 
-  // production: {
-  //   client: "postgresql",
+  // production:  {
+  //   client: 'pg',
   //   connection: {
-  //     database: "my_db",
-  //     user: "username",
-  //     password: "password",
+  //     host: HOST,
+  //     port: PORTDATABASE,
+  //     user: USER,
+  //     password: PASSWORD,
+  //     database: DATABASE
   //   },
   //   pool: {
   //     min: 2,
-  //     max: 10,
+  //     max: 10
   //   },
   //   migrations: {
-  //     tableName: "knex_migrations",
+  //     directory: './database/migrations'
   //   },
-  // },
+  //   seeds: {
+  //     directory: './database/seeds'
+  //   }
+  // }
 };

@@ -1,17 +1,29 @@
-const express = require("express");
-const reviewController = require("../controllers/reviewControllers");
+const express = require('express');
+const { upload } = require('../middleware/uploadCloudinary');
+const reviewController = require('../controllers/reviewControllers');
+const {
+  checkSignIn,
+  checkReviewer
+} = require('../middleware/authenticationAndAuthorization');
+const catchAsync = require('../middleware/catchAsync');
 
 const router = express.Router();
 
-router
-  .route("/")
-  .post(reviewController.createReview)
-  .get(reviewController.getAllReview);
+router.route('/').get(catchAsync(reviewController.getAllReview));
 
 router
-  .route("/:id")
-  .get(reviewController.getOneReview)
-  .put(reviewController.updateReview)
-  .delete(reviewController.deleteReview);
+  .route('/:id')
+  .post(
+    checkSignIn,
+    upload.single('image'),
+    catchAsync(reviewController.createReview)
+  )
+  .get(catchAsync(reviewController.getOneReview))
+  .put(checkSignIn, checkReviewer, catchAsync(reviewController.updateReview))
+  .delete(
+    checkSignIn,
+    checkReviewer,
+    catchAsync(reviewController.deleteReview)
+  );
 
 module.exports = router;
