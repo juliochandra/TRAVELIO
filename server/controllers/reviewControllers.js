@@ -27,10 +27,7 @@ module.exports.createReview = async (req, res) => {
   const [review] = await db('review')
     .insert(userIdAndReviewData)
     .returning('*');
-  res.status(201).json({
-    status: 'success',
-    data: review
-  });
+  res.redirect(`/api/v1/destinations/${review.destination_id}`);
 };
 
 module.exports.getAllReview = async (req, res) => {
@@ -42,10 +39,10 @@ module.exports.getAllReview = async (req, res) => {
 };
 
 module.exports.getOneReview = async (req, res) => {
-  const reviewId = req.params.id;
+  const destinationId = req.params.id;
   const review = await db('review')
     .select('*')
-    .where('id', reviewId);
+    .where('destination_id', destinationId);
   res.status(200).json({
     status: 'success',
     data: review
@@ -69,11 +66,16 @@ module.exports.updateReview = async (req, res) => {
 };
 
 module.exports.deleteReview = async (req, res) => {
-  const reviewId = req.params.id;
+  const reviewID = req.params.id;
+  console.log(reviewID);
+
+  const [review] = await db('review')
+    .select('*')
+    .where('id', reviewID);
+  console.log(review);
+
   await db('review')
-    .where('id', reviewId)
+    .where('id', reviewID)
     .del();
-  res.status(201).json({
-    status: 'success'
-  });
+  res.redirect(`/api/v1/destinations/${review.destination_id}`);
 };

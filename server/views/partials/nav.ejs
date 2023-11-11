@@ -15,6 +15,9 @@
         </li>
         <% } else { %>
         <li class="nav-item">
+          <a class="nav-link" href="/"><%= currentUser.name %></a>
+        </li>
+        <li class="nav-item">
           <a class="nav-link" href="/api/v1/users/signout">Logout</a>
         </li>
         <% } %>

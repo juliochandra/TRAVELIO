@@ -1,6 +1,6 @@
 <% layout('/layouts/base.ejs') %>
 
-<div class="container mb-5">
+<div class="container mb-5 mt-5">
   <div class="row">
 
     <div class="col-lg-6 mb-4">
@@ -8,54 +8,84 @@
         <img src="<%= destinationData.image %>" class="card-img-top" alt="<%= destinationData.name %> image">
         <div class="card-body">
           <h5 class="card-title"><%= destinationData.name %></h5>
-          <p class="card-text"><%= destinationData.description %></p>
+          <p class="card-text text-justify"><%= destinationData.description %></p>
         </div>
         <ul class="list-group list-group-flush">
           <li class="list-group-item"><%= destinationData.location %></li>
         </ul>
+        <%if(currentUser){ %>
+        <% if (currentUser.id === destinationData.user_id) { %>
         <div class="card-body">
-          <a href="/campgrounds/<%= destinationData.id %>/edit" class="card-link btn btn-primary">Edit</a>
-          <form class="d-inline" action="/campgrounds/<%= destinationData.id %>?_method=DELETE" method="POST">
+          <a href="/api/v1/destinations/<%= destinationData.id %>/update" class="card-link btn btn-primary">Edit</a>
+          <form class="d-inline" action="/api/v1/destinations/<%= destinationData.id %>?_method=DELETE" method="POST">
             <button type="submit" class="btn btn-danger">Delete</button>
           </form>
         </div>
+        <% } %>
+        <% } %>
         <div class="card-footer text-muted">
-          <%= destinationData.name_creator %> </div>
+          <%= destinationData.name_creator %>
+        </div>
       </div>
     </div>
 
     <div class="col-lg-6 mb-4">
-      <h2 class="mb-3">Leave a Review</h2>
-      <form action="/campgrounds/<%= destinationData.id %>/reviews" method="POST" class="needs-validation" novalidate>
-        <div class="mb-3">
-          <label for="rating" class="form-label">Rating</label>
-          <input class="form-range" type="range" min="1" max="5" name="review[rating]" id="rating">
-        </div>
-        <div class="mb-3">
-          <label for="body" class="form-label">Review</label>
-          <textarea class="form-control" name="review[body]" id="body" rows="3" required></textarea>
-          <div class="invalid-feedback">
-            Please provide a review.
-          </div>
-        </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
-      </form>
 
-      <% reviewData.forEach(function(review) { %>
-      <div class="card mb-3">
-        <div class="card-body">
-          <h5 class="card-title">Rating: <%= review.rating %></h5>
-          <p class="card-text"><%= review.review %></p>
-          <% if (review.image) { %>
-          <img src="<%= review.image %>" class="card-img-bottom mb-3" alt="Review image">
-          <% } %>
-          <form action="/campgrounds/<%= destinationData.id %>/reviews/<%= review.id %>?_method=DELETE" method="POST">
-            <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+      <div class="card shadow">
+        <div class="card-body ">
+          <h2 class="mb-3">Leave a Review</h2>
+          <form action="/api/v1/reviews/<%= destinationData.id %>" method="POST" class="needs-validation" novalidate>
+            <div class="mb-3">
+              <label for="rating" class="form-label">Rating</label>
+              <input class="form-range" type="range" min="1" max="5" name="rating" id="rating">
+            </div>
+            <div class="mb-3">
+              <label for="body" class="form-label ">Review</label>
+              <textarea class="form-control" name="review" id="review" rows="3" required></textarea>
+              <div class="invalid-feedback">
+                Please provide a review.
+              </div>
+            </div>
+            <button type="submit" class="btn btn-primary mb-3">Submit</button>
           </form>
+
+          <% reviewData.forEach(function(review) { %>
+          <div class="card mb-3">
+            <div class="card-body">
+              <h5 class="card-title">Rating: <%= review.rating %></h5>
+              <p class="card-text text-justify"><%= review.review %></p>
+
+              <div class="card-text mb-3">
+                <%= review.name %>
+              </div>
+
+              <% if (review.image) { %>
+              <img src="<%= review.image %>" class="card-img-bottom mb-3" alt="Review image">
+              <% } %>
+              <%if(currentUser){ %>
+              <% if (currentUser.id === review.user_id) { %>
+              <form action="/api/v1/reviews/<%= review.id %>?_method=DELETE" method="POST">
+                <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+              </form>
+              <% } %>
+              <% } %>
+            </div>
+          </div>
+          <% }); %>
         </div>
       </div>
-      <% }); %>
-    </div>
 
+    </div>
   </div>
-</div>
+
+  <style>
+    .text-justify {
+      text-align: justify;
+      text-justify: inter-word;
+    }
+
+    .text-justify::before {
+      content: '\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0';
+      display: inline-block;
+    }
+  </style>
