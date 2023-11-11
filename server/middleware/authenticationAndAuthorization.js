@@ -6,7 +6,7 @@ module.exports.checkSignIn = catchAsync(async (req, res, next) => {
   if (req.isAuthenticated()) {
     next();
   } else {
-    res.status(401).json({ message: 'Please sign in first' });
+    res.status(401).render('users/login');
   }
 });
 
@@ -20,10 +20,11 @@ module.exports.checkCreator = async (req, res, next) => {
     if (destination.user_id === req.user.id) {
       next();
     } else {
-      res.status(403).json({
-        status: 'success',
-        data: 'not creator of destination'
-      });
+      res.status(401).render('/');
+      // res.status(403).json({
+      //   status: 'success',
+      //   data: 'not creator of destination'
+      // });
     }
   } catch (error) {
     res.status(500).json({ message: 'Error checking creator' });
@@ -39,10 +40,11 @@ module.exports.checkReviewer = async (req, res, next) => {
     if (review.user_id === req.user.id) {
       next();
     } else {
-      res.status(403).json({
-        status: 'success',
-        data: 'not reviewer of destination'
-      });
+      res.status(401).render('/');
+      // res.status(403).json({
+      //   status: 'success',
+      //   data: 'not reviewer of destination'
+      // });
     }
   } catch (error) {
     res.status(500).json({ message: 'Error checking creator' });

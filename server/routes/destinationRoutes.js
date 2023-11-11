@@ -35,6 +35,7 @@ router
   .put(
     checkSignIn,
     checkCreator,
+    upload.single('image'),
     catchAsync(destinationController.updateDestination)
   )
   .delete(

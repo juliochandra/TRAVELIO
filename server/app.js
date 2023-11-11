@@ -7,6 +7,7 @@ const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const dotenv = require('dotenv');
 const path = require('path');
+const methodOverride = require('method-override');
 const { db } = require('./database/database');
 
 const destinationsRouter = require('./routes/destinationRoutes');
@@ -16,16 +17,19 @@ const homeRouter = require('./routes/homeRoutes');
 const ExpressError = require('./middleware/expressError');
 
 dotenv.config({ path: './.env' });
+
 const port = process.env.PORT;
 const app = express();
 
 app.engine('ejs', ejsMate);
-app.set('view engine', 'ejs');
 
+app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(methodOverride('_method'));
+
 app.use(express.static(path.join(__dirname, 'public')));
 
 // express session for save data signin and userId
