@@ -111,7 +111,7 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 //  route
-app.get('/', homeRouter);
+app.use('/', homeRouter);
 app.use('/api/v1/destinations', destinationsRouter);
 app.use('/api/v1/reviews', reviewsRouter);
 app.use('/api/v1/users', usersRouter);

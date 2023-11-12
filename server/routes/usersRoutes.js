@@ -14,7 +14,7 @@ router
 router
   .route('/signin')
   .get(userController.renderSignin)
-  .post(passport.authenticate('local'), catchAsync(userController.signin));
+  .post(userController.signin);
 
 router.route('/signout').get(catchAsync(userController.signout));
 
