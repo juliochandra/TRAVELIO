@@ -1,5 +1,6 @@
 const bcrypt = require('bcrypt');
 const { db } = require('../database/database');
+const passport = require('passport');
 
 module.exports.renderSignup = async (req, res) => {
   res.render('users/register');
@@ -16,7 +17,7 @@ module.exports.signup = async (req, res) => {
     .first();
 
   if (checkUserEmail) {
-    return res.status(409).json({ message: 'Email already in use' });
+    return res.status(409).redirect('/');
   }
 
   const hashedPassword = await bcrypt.hash(password, 12);
@@ -32,8 +33,21 @@ module.exports.signup = async (req, res) => {
   }
 };
 
-module.exports.signin = async (req, res) => {
-  res.status(200).redirect('/');
+module.exports.signin = (req, res, next) => {
+  passport.authenticate('local', (err, user) => {
+    if (err) {
+      return next(err);
+    }
+    if (!user) {
+      return res.redirect('/api/v1/users/signin');
+    }
+    req.logIn(user, err => {
+      if (err) {
+        return next(err);
+      }
+      return res.redirect('/');
+    });
+  })(req, res, next);
 };
 
 module.exports.signout = async (req, res, next) => {
