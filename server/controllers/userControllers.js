@@ -1,6 +1,6 @@
 const bcrypt = require('bcrypt');
-const { db } = require('../database/database');
 const passport = require('passport');
+const { db } = require('../database/database');
 
 module.exports.renderSignup = async (req, res) => {
   res.render('users/register');
