@@ -24,10 +24,7 @@ exports.up = function(knex) {
       .notNullable();
     table.text('review');
     table.integer('rating').notNullable();
-    table
-      .string('image')
-      .defaultTo(image)
-      .notNullable();
+    table.string('image').defaultTo(image);
   });
 };
 
