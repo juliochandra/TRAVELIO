@@ -4,17 +4,23 @@
   <div class="row">
 
     <div class="col-lg-6 mb-4">
-      <div class="card h-100 shadow">
+      <div class="card shadow">
         <img src="<%= destinationData.image %>" class="card-img-top" alt="<%= destinationData.name %> image">
         <div class="card-body">
-          <h5 class="card-title"><%= destinationData.name %></h5>
-          <p class="card-text text-justify"><%= destinationData.description %></p>
+          <h5 class="card-title">
+            <%= destinationData.name %>
+          </h5>
+          <p class="card-text text-justify">
+            <%= destinationData.description %>
+          </p>
         </div>
         <ul class="list-group list-group-flush">
-          <li class="list-group-item"><%= destinationData.location %></li>
+          <li class="list-group-item">
+            <%= destinationData.location %>
+          </li>
         </ul>
         <%if(currentUser){ %>
-        <% if (currentUser.id === destinationData.user_id) { %>
+        <% if (currentUser.id===destinationData.user_id) { %>
         <div class="card-body">
           <a href="/api/v1/destinations/<%= destinationData.id %>/update" class="card-link btn btn-primary">Edit</a>
           <form class="d-inline" action="/api/v1/destinations/<%= destinationData.id %>?_method=DELETE" method="POST">
@@ -30,7 +36,6 @@
     </div>
 
     <div class="col-lg-6 mb-4">
-
       <div class="card shadow">
         <div class="card-body ">
           <h2 class="mb-3">Leave a Review</h2>
@@ -52,23 +57,25 @@
           <% reviewData.forEach(function(review) { %>
           <div class="card mb-3">
             <div class="card-body">
-              <h5 class="card-title">Rating: <%= review.rating %></h5>
-              <p class="card-text text-justify"><%= review.review %></p>
-
-              <div class="card-text mb-3">
-                <%= review.name %>
-              </div>
+              <h5 class="card-title">Rating: <%= review.rating %>
+              </h5>
+              <p class="card-text text-justify">
+                <%= review.review %>
+              </p>
 
               <% if (review.image) { %>
               <img src="<%= review.image %>" class="card-img-bottom mb-3" alt="Review image">
               <% } %>
               <%if(currentUser){ %>
-              <% if (currentUser.id === review.user_id) { %>
+              <% if (currentUser.id===review.user_id) { %>
               <form action="/api/v1/reviews/<%= review.id %>?_method=DELETE" method="POST">
-                <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                <button type="submit" class="btn btn-sm btn-danger mb-1">Delete</button>
               </form>
               <% } %>
               <% } %>
+            </div>
+            <div class="card-footer text-muted">
+              <%= review.name %>
             </div>
           </div>
           <% }); %>
@@ -84,8 +91,8 @@
       text-justify: inter-word;
     }
 
-    .text-justify::before {
+    /* .text-justify::before {
       content: '\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0';
       display: inline-block;
-    }
+    } */
   </style>
